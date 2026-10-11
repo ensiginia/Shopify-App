@@ -1,0 +1,56 @@
+<ss-conversion-block data-kind="upsell" data-position="{{ block.settings.position | escape }}" data-full-width="{{ block.settings.full_width }}"  data-proxy="{{ block.settings.proxy_path | escape }}" data-wrap="{{ block.settings.wrap_section }}" data-design="{{ request.design_mode }}" data-add-url="{{ routes.cart_add_url }}.js" data-locale="{{ request.locale.iso_code }}" style="--cb-bg:{{ block.settings.background }};--cb-fg:{{ block.settings.foreground }};--cb-padding:{{ block.settings.padding }}px;--cb-radius:{{ block.settings.radius | default: 8 }}px;--cb-spacing:{{ block.settings.spacing | default: 0 }}px" class="cb-live cb-live-upsell cb-live-{{ block.settings.layout }}" {{ block.shopify_attributes }}><h3><span data-cb-text="heading">{{ block.settings.heading | escape }}</span></h3>{% assign offered = block.settings.offer_product %}{% if offered != blank %}<h3>{{ offered.title | escape }}</h3>{% form 'product', offered, data-cb-form: 'true' %}<label>Variant<select name="id">{% for variant in offered.variants %}<option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %} {% if variant.id == offered.selected_or_first_available_variant.id %}selected{% endif %}>{{ variant.title | escape }} — {{ variant.price | money }}</option>{% endfor %}</select></label><input type="hidden" name="quantity" value="1"><button type="submit" {% unless offered.available %}disabled{% endunless %}><span data-cb-text="label">{{ block.settings.label | escape }}</span></button>{% endform %}{% elsif request.design_mode %}<p>Select a product in this block's settings.</p>{% endif %}<span class="cb-live-status" role="status" aria-live="polite"></span></ss-conversion-block>
+{% schema %}
+{
+  "name": "Upsell",
+  "target": "section",
+  "stylesheet": "conversion-blocks.css",
+  "javascript": "conversion-blocks.js",
+  "settings": [
+    {
+      "id": "heading",
+      "label": "Heading",
+      "type": "text",
+      "default": "You may also like"
+    },
+    {
+      "id": "offer_product",
+      "label": "Upsell product",
+      "type": "product"
+    },
+    {
+      "id": "label",
+      "label": "Button label",
+      "type": "text",
+      "default": "Add to cart"
+    },
+    {
+      "id": "background",
+      "label": "Background",
+      "type": "color",
+      "default": "#f6f6f6"
+    },
+    {
+      "id": "foreground",
+      "label": "Text color",
+      "type": "color",
+      "default": "#202223"
+    },
+    {
+      "id": "padding",
+      "label": "Padding",
+      "type": "range",
+      "default": 16,
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "id": "proxy_path",
+      "label": "App proxy path",
+      "type": "text",
+      "default": "/apps/section-experiments"
+    }
+  ]
+}
+{% endschema %}

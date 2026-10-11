@@ -1,0 +1,57 @@
+<ss-conversion-block data-kind="countdown" data-position="{{ block.settings.position | escape }}" data-full-width="{{ block.settings.full_width }}"  data-proxy="{{ block.settings.proxy_path | escape }}" data-wrap="{{ block.settings.wrap_section }}" data-design="{{ request.design_mode }}" data-add-url="{{ routes.cart_add_url }}.js" data-locale="{{ request.locale.iso_code }}" style="--cb-bg:{{ block.settings.background }};--cb-fg:{{ block.settings.foreground }};--cb-padding:{{ block.settings.padding }}px;--cb-radius:{{ block.settings.radius | default: 8 }}px;--cb-spacing:{{ block.settings.spacing | default: 0 }}px" class="cb-live cb-live-countdown cb-live-{{ block.settings.layout }}" {{ block.shopify_attributes }}><h3><span data-cb-text="heading">{{ block.settings.heading | escape }}</span></h3><p data-cb-countdown data-end="{{ block.settings.ends_at | escape }}" data-expired="{{ block.settings.expired | escape }}" role="timer"></p><span class="cb-live-status" role="status" aria-live="polite"></span></ss-conversion-block>
+{% schema %}
+{
+  "name": "Countdown timer",
+  "target": "section",
+  "stylesheet": "conversion-blocks.css",
+  "javascript": "conversion-blocks.js",
+  "settings": [
+    {
+      "id": "heading",
+      "label": "Heading",
+      "type": "text",
+      "default": "Offer ends in"
+    },
+    {
+      "id": "ends_at",
+      "label": "End time (ISO with time zone)",
+      "type": "text",
+      "default": "2026-12-31T23:59:59Z"
+    },
+    {
+      "id": "expired",
+      "label": "Expired message",
+      "type": "text",
+      "default": "This offer has ended"
+    },
+    {
+      "id": "background",
+      "label": "Background",
+      "type": "color",
+      "default": "#f6f6f6"
+    },
+    {
+      "id": "foreground",
+      "label": "Text color",
+      "type": "color",
+      "default": "#202223"
+    },
+    {
+      "id": "padding",
+      "label": "Padding",
+      "type": "range",
+      "default": 16,
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "id": "proxy_path",
+      "label": "App proxy path",
+      "type": "text",
+      "default": "/apps/section-experiments"
+    }
+  ]
+}
+{% endschema %}

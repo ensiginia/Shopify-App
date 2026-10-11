@@ -1,0 +1,4 @@
+.ss-prototype-shell {min-height:100vh; font-family:Arial,Helvetica,sans-serif; display:block; padding:0;}
+.ss-prototype-shell *, .ss-prototype-shell *::before, .ss-prototype-shell *::after {box-sizing:border-box;}
+.ss-prototype-content {width:100%; min-width:0;}
+.ss-prototype-shell .sc-detail-dialog {max-width:min(1540px,calc(100vw - 32px));transform:none;}

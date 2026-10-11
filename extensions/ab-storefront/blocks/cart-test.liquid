@@ -1,0 +1,18 @@
+<ss-ab-experiment
+  data-surface="Carts"
+  data-currency="{{ cart.currency.iso_code | escape }}"
+  data-proxy="{{ block.settings.proxy_path | escape }}"
+  data-cart-label="{{ block.settings.label | escape }}"
+></ss-ab-experiment>
+{% schema %}
+{
+  "name": "A/B cart drawer",
+  "target": "body",
+  "javascript": "ab-storefront.js",
+  "stylesheet": "ab-storefront.css",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Cart button text", "default": "View cart" },
+    { "type": "text", "id": "proxy_path", "label": "App proxy path", "default": "/apps/section-experiments", "info": "Match the app proxy path configured for your installation." }
+  ]
+}
+{% endschema %}

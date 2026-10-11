@@ -1,0 +1,23 @@
+<ss-ab-experiment
+  data-surface="Bundles"
+  data-product-id="{{ product.id }}"
+  data-product-handle="{{ product.handle | escape }}"
+  data-currency="{{ cart.currency.iso_code | escape }}"
+  data-proxy="{{ block.settings.proxy_path | escape }}"
+  {{ block.shopify_attributes }}
+></ss-ab-experiment>
+{% if request.design_mode %}
+  <p>Add a product-targeted A/B test in the app. Live assignment is disabled in the theme editor.</p>
+{% endif %}
+{% schema %}
+{
+  "name": "A/B bundle offer",
+  "target": "section",
+  "javascript": "ab-storefront.js",
+  "stylesheet": "ab-storefront.css",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "text", "id": "proxy_path", "label": "App proxy path", "default": "/apps/section-experiments", "info": "Match the app proxy path configured for your installation." }
+  ]
+}
+{% endschema %}

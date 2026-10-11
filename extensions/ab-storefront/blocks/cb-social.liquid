@@ -1,0 +1,67 @@
+<ss-conversion-block data-kind="social" data-position="{{ block.settings.position | escape }}" data-full-width="{{ block.settings.full_width }}"  data-proxy="{{ block.settings.proxy_path | escape }}" data-wrap="{{ block.settings.wrap_section }}" data-design="{{ request.design_mode }}" data-add-url="{{ routes.cart_add_url }}.js" data-locale="{{ request.locale.iso_code }}" style="--cb-bg:{{ block.settings.background }};--cb-fg:{{ block.settings.foreground }};--cb-padding:{{ block.settings.padding }}px;--cb-radius:{{ block.settings.radius | default: 8 }}px;--cb-spacing:{{ block.settings.spacing | default: 0 }}px" class="cb-live cb-live-social cb-live-{{ block.settings.layout }}" {{ block.shopify_attributes }}><h3><span data-cb-text="heading">{{ block.settings.heading | escape }}</span></h3>{% assign quotes = block.settings.quotes | newline_to_br | split: '<br />' %}<div class="cb-live-carousel" data-cb-carousel>{% for quote in quotes %}{% if quote != blank %}<blockquote>{% if forloop.index == 1 and block.settings.image_1 != blank %}{{ block.settings.image_1 | image_url: width: 600 | image_tag: loading: 'lazy' }}{% elsif forloop.index == 2 and block.settings.image_2 != blank %}{{ block.settings.image_2 | image_url: width: 600 | image_tag: loading: 'lazy' }}{% endif %}<span data-cb-list="quotes" data-cb-index="{{ forloop.index0 }}">{{ quote | strip | escape }}</span><cite><span data-cb-text="attribution">{{ block.settings.attribution | escape }}</span></cite></blockquote>{% endif %}{% endfor %}</div><div class="cb-live-controls"><button type="button" data-cb-prev aria-label="Previous testimonial">‹</button><button type="button" data-cb-next aria-label="Next testimonial">›</button></div><span class="cb-live-status" role="status" aria-live="polite"></span></ss-conversion-block>
+{% schema %}
+{
+  "name": "Social proof",
+  "target": "section",
+  "stylesheet": "conversion-blocks.css",
+  "javascript": "conversion-blocks.js",
+  "settings": [
+    {
+      "id": "image_1",
+      "label": "First customer image",
+      "type": "image_picker"
+    },
+    {
+      "id": "image_2",
+      "label": "Second customer image",
+      "type": "image_picker"
+    },
+    {
+      "id": "heading",
+      "label": "Heading",
+      "type": "text",
+      "default": "What customers say"
+    },
+    {
+      "id": "quotes",
+      "label": "Testimonials (one per line)",
+      "type": "textarea",
+      "default": "Add a real customer testimonial."
+    },
+    {
+      "id": "attribution",
+      "label": "Customer attribution",
+      "type": "text",
+      "default": "Customer name"
+    },
+    {
+      "id": "background",
+      "label": "Background",
+      "type": "color",
+      "default": "#f6f6f6"
+    },
+    {
+      "id": "foreground",
+      "label": "Text color",
+      "type": "color",
+      "default": "#202223"
+    },
+    {
+      "id": "padding",
+      "label": "Padding",
+      "type": "range",
+      "default": 16,
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "id": "proxy_path",
+      "label": "App proxy path",
+      "type": "text",
+      "default": "/apps/section-experiments"
+    }
+  ]
+}
+{% endschema %}

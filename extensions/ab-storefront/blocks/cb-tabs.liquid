@@ -1,0 +1,75 @@
+<ss-conversion-block data-kind="tabs" data-position="{{ block.settings.position | escape }}" data-full-width="{{ block.settings.full_width }}"  data-proxy="{{ block.settings.proxy_path | escape }}" data-wrap="{{ block.settings.wrap_section }}" data-design="{{ request.design_mode }}" data-add-url="{{ routes.cart_add_url }}.js" data-locale="{{ request.locale.iso_code }}" style="--cb-bg:{{ block.settings.background }};--cb-fg:{{ block.settings.foreground }};--cb-padding:{{ block.settings.padding }}px;--cb-radius:{{ block.settings.radius | default: 8 }}px;--cb-spacing:{{ block.settings.spacing | default: 0 }}px" class="cb-live cb-live-tabs cb-live-{{ block.settings.layout }}" {{ block.shopify_attributes }}><h3><span data-cb-text="heading">{{ block.settings.heading | escape }}</span></h3><details open><summary><span data-cb-text="tab_1">{{ block.settings.tab_1 | escape }}</span></summary><p><span data-cb-text="content_1">{{ block.settings.content_1 | escape | newline_to_br }}</span></p></details><details><summary><span data-cb-text="tab_2">{{ block.settings.tab_2 | escape }}</span></summary><p><span data-cb-text="content_2">{{ block.settings.content_2 | escape | newline_to_br }}</span></p></details>{% if block.settings.expert != blank %}<blockquote><span data-cb-text="expert">{{ block.settings.expert | escape }}</span></blockquote>{% endif %}<span class="cb-live-status" role="status" aria-live="polite"></span></ss-conversion-block>
+{% schema %}
+{
+  "name": "Tabs",
+  "target": "section",
+  "stylesheet": "conversion-blocks.css",
+  "javascript": "conversion-blocks.js",
+  "settings": [
+    {
+      "id": "heading",
+      "label": "Heading",
+      "type": "text",
+      "default": "Product details"
+    },
+    {
+      "id": "tab_1",
+      "label": "First tab",
+      "type": "text",
+      "default": "Description"
+    },
+    {
+      "id": "content_1",
+      "label": "First content",
+      "type": "textarea",
+      "default": "Add product details here."
+    },
+    {
+      "id": "tab_2",
+      "label": "Second tab",
+      "type": "text",
+      "default": "Delivery"
+    },
+    {
+      "id": "content_2",
+      "label": "Second content",
+      "type": "textarea",
+      "default": "Add your shipping and returns policy."
+    },
+    {
+      "id": "expert",
+      "label": "Expert review",
+      "type": "text",
+      "default": "Your expert's review"
+    },
+    {
+      "id": "background",
+      "label": "Background",
+      "type": "color",
+      "default": "#f6f6f6"
+    },
+    {
+      "id": "foreground",
+      "label": "Text color",
+      "type": "color",
+      "default": "#202223"
+    },
+    {
+      "id": "padding",
+      "label": "Padding",
+      "type": "range",
+      "default": 16,
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "id": "proxy_path",
+      "label": "App proxy path",
+      "type": "text",
+      "default": "/apps/section-experiments"
+    }
+  ]
+}
+{% endschema %}

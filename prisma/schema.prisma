@@ -1,0 +1,174 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
+// enough when changing adapters.
+// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.sqlite"
+}
+
+model Session {
+  id            String    @id
+  shop          String
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        BigInt?
+  firstName     String?
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean?  @default(false)
+  emailVerified Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+}
+
+model AbExperiment {
+  id              String   @id
+  shop            String
+  setup           String
+  surface         String
+  targetKey       String
+  status          String   @default("Draft")
+  activeTargetKey String?
+  version         Int      @default(1)
+  archived        Boolean  @default(false)
+  discounts       String   @default("{}")
+  rolloutVariant  String?
+  rolloutUntil    DateTime?
+  operationAt     DateTime?
+  selectedVariant String?
+  createdAt       DateTime @default(now())
+  startedAt       DateTime?
+  endedAt         DateTime?
+  exposures       AbExposure[]
+  orders          AbOrder[]
+  @@unique([shop, activeTargetKey])
+  @@index([shop, createdAt])
+}
+
+model AbExposure {
+  id           String   @id @default(cuid())
+  experimentId String
+  visitorHash  String
+  variant      String
+  createdAt    DateTime @default(now())
+  experiment   AbExperiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+  @@unique([experimentId, visitorHash])
+  @@index([experimentId, variant])
+}
+
+model AbOrder {
+  id           String @id @default(cuid())
+  shop         String
+  orderId      String
+  experimentId String
+  visitorHash  String
+  variant      String
+  currency     String
+  grossCents   Int
+  refundCents  Int @default(0)
+  isTest       Boolean @default(false)
+  paidAt       DateTime
+  experiment   AbExperiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+  @@unique([shop, orderId])
+  @@index([experimentId, variant, visitorHash])
+}
+
+model AbRefund {
+  id         String @id @default(cuid())
+  shop       String
+  refundId   String
+  orderId    String
+  cents      Int
+  currency   String
+  createdAt  DateTime @default(now())
+  @@unique([shop, refundId])
+  @@index([shop, orderId])
+}
+
+model AbAudit {
+  id           String @id @default(cuid())
+  shop         String
+  experimentId String?
+  action       String
+  detail       String
+  createdAt    DateTime @default(now())
+  @@index([shop, createdAt])
+}
+
+model AiAccount {
+  shop String @id
+  brand String @default("{}")
+  balance Int @default(5)
+  updatedAt DateTime @updatedAt
+}
+
+model AiPage {
+  id String @id
+  shop String
+  setup String
+  content String
+  status String @default("draft")
+  version Int @default(1)
+  error String @default("")
+  deployment String @default("{}")
+  operationAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  revisions AiRevision[]
+  @@index([shop, updatedAt])
+}
+
+model AiRevision {
+  id String @id @default(cuid())
+  pageId String
+  version Int
+  content String
+  createdAt DateTime @default(now())
+  page AiPage @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  @@unique([pageId, version])
+}
+
+model AiGeneration {
+  id String @id
+  shop String
+  pageId String
+  requestKey String
+  reserved Boolean @default(true)
+  status String @default("running")
+  createdAt DateTime @default(now())
+  @@unique([shop, requestKey])
+  @@index([shop, status, createdAt])
+}
+
+model AiImage {
+  id String @id
+  shop String
+  pageId String
+  data String
+  createdAt DateTime @default(now())
+  @@index([shop, pageId])
+}
+
+model ResourceEntry {
+  id String @id @default(cuid())
+  shop String
+  kind String
+  title String
+  body String
+  status String @default("Pending")
+  version Int @default(1)
+  createdAt DateTime @default(now())
+  @@index([shop, kind, createdAt])
+}

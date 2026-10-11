@@ -1,0 +1,4 @@
+import type {LoaderFunctionArgs} from "react-router";
+import {authenticate} from "../shopify.server";
+import prisma from "../db.server";
+export async function loader({request}:LoaderFunctionArgs){const {session}=await authenticate.public.appProxy(request);if(!session)return Response.json({content:{}},{status:401});const url=new URL(request.url),time=Number(url.searchParams.get("timestamp")),language=(url.searchParams.get("language")||"en").split("-")[0];if(!time||Math.abs(Date.now()/1000-time)>300||! ["en","ur","fr","de","es"].includes(language))return Response.json({content:{}},{status:400});const entry=await prisma.resourceEntry.findFirst({where:{shop:session.shop,kind:"conversion-translation",title:language,status:"Published"}});return Response.json({content:entry?JSON.parse(entry.body):{}},{headers:{"Cache-Control":"no-store"}});}
